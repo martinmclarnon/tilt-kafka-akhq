@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: akhq-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: akhq-kafka-gui
+  template:
+    metadata:
+      labels:
+        app: akhq-kafka-gui
+    spec:
+      containers:
+        - name: akhq-kafka-container
+          image: tchiotludo/akhq:latest # Change to the desired AKHQ version/tag
+          ports:
+            - containerPort: 8080
+          env:
+            - name: AKHQ_CONFIGS_GLOBAL_BOOTSTRAP_SERVERS
+              value: "kafka-service:9092" # Replace with your Kafka broker address
+            - name: AKHQ_CONFIGURATION
+              value: |
+                akhq:
+                  connections:
+                    docker-kafka-server:
+                      properties:
+                        bootstrap.servers: "kafka-service:9092"

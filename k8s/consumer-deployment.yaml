@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-deployment
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: consumer
+  template:
+    metadata:
+      labels:
+        app: consumer
+    spec:
+      containers:
+        - name: consumer-container
+          image: consumer:latest 
+          ports:
+            - containerPort: 8082
+          env:
+            - name: kafka_order_bootstrap-servers
+              value: "kafka-service:9092"
+            - name: kafka_order_topic_create-order
+              value: "create-order"
+            - name: logging_level_root
+              value: "info"
+            - name: kafka_order_consumer_group-id_notification
+              value: "notification"
