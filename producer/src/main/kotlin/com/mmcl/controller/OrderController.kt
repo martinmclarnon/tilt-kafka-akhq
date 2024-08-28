@@ -1,6 +1,8 @@
 package com.mmcl.controller
 
 import com.mmcl.model.Order
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.mmcl.service.CreateOrderProducer
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
@@ -29,6 +31,7 @@ class OrderController(
     @PostMapping
     @Throws(ExecutionException::class, InterruptedException::class)
     fun createOrder(@RequestBody order: Order): ResponseEntity<*> {
+        log.info("{}", order)
         createOrderProducer.sendCreateOrderEvent(order)
         return ResponseEntity<Any>(HttpStatus.OK)
     }
@@ -36,6 +39,10 @@ class OrderController(
     @GetMapping("/env")
     fun getHelloWorld(): String {
         return "$createOrderTopic - $servers"
+    }
+
+    companion object {
+        private val log = LoggerFactory.getLogger(CreateOrderProducer::class.java)
     }
 }
 

@@ -1,8 +1,8 @@
 FROM gradle:jdk17 as gradleimage
 
 # Set environment variables
-ENV kafka_order_bootstrap-servers=localhost:9092
-ENV kafka_order_consumer_group-id_notification=notification
+#ENV kafka_order_bootstrap-servers=localhost:9092
+#ENV kafka_order_consumer_group-id_notification=notification
 
 COPY . /home/gradle/source
 WORKDIR /home/gradle/source

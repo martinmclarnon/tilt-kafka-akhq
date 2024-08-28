@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: akhq-deployment
+  name: demo-akhq
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: akhq-kafka-gui
+      app: demo-akhq
   template:
     metadata:
       labels:
-        app: akhq-kafka-gui
+        app: demo-akhq
     spec:
       containers:
         - name: akhq-kafka-container
@@ -19,11 +19,25 @@ spec:
             - containerPort: 8080
           env:
             - name: AKHQ_CONFIGS_GLOBAL_BOOTSTRAP_SERVERS
-              value: "kafka-service:9092" # Replace with your Kafka broker address
+              value: "demo-kafka:9092" # Replace with your Kafka broker address
             - name: AKHQ_CONFIGURATION
               value: |
                 akhq:
                   connections:
-                    docker-kafka-server:
+                    demo-kafka-server:
                       properties:
-                        bootstrap.servers: "kafka-service:9092"
+                        bootstrap.servers: "demo-kafka:9092"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-akhq
+spec:
+  selector:
+    app: demo-akhq
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer # Use NodePort, ClusterIP, or LoadBalancer based on your setup
+                

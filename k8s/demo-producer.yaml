@@ -1,28 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: producer-deployment
+  name: demo-producer
 spec:
   replicas: 1 
   selector:
     matchLabels:
-      app: producer
+      app: demo-producer
   template:
     metadata:
       labels:
-        app: producer
+        app: demo-producer
     spec:
       containers:
-        - name: producer-container
+        - name: demo-producer-container
           image: producer:latest 
           ports:
             - containerPort: 8080
           env:
             - name: kafka_order_bootstrap-servers
-              value: "kafka-service:9092"
+              value: "demo-kafka:9092"
             - name: kafka_order_topic_create-order
               value: "create-order"
             - name: logging_level_root
               value: "info"
             - name: auto_create_topics_enable
               value: "true"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-producer
+spec:
+  selector:
+    app: producer
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8080 # Must match the container port in your Deployment
+  type: ClusterIP # You can use other types like NodePort or LoadBalancer if needed

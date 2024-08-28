@@ -1,14 +1,10 @@
 FROM gradle:jdk17 as gradleimage
 
 # Set environment variables
-#ENV KAFKA_ORDER_BOOTSTRAP-SERVERS=localhost:9092
-#ENV KAFKA_ORDER_TOPIC_CREATE-ORDER=create-order
-#ENV LOGGING_LEVEL_ROOT=info
-#ENV AUTO_CREATE_TOPICS_ENABLE=true
-ENV kafka_order_bootstrap-servers=kafka-service:9092
-ENV kafka_order_topic_create-order=create-order
-ENV logging_level_root=info
-ENV auto_create_topics_enable=true
+#ENV kafka_order_bootstrap-servers=kafka-service:9092
+#ENV kafka_order_topic_create-order=create-order
+#ENV logging_level_root=info
+#ENV auto_create_topics_enable=true
 
 COPY . /home/gradle/source
 WORKDIR /home/gradle/source
